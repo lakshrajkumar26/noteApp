@@ -1,0 +1,129 @@
+
+.signup-container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+}
+
+/* LEFT SECTION (Form) */
+.left-section {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;        
+  justify-content: center;     
+  position: relative;
+  background-color: #fff;
+  padding: 0 40px;
+}
+
+.logo {
+  position: absolute;
+  top: 24px;
+  left: 32px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #111;
+}
+
+.form-wrapper {
+  width: 100%;
+  max-width: 360px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+h2 {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: #888;
+  margin-bottom: 16px;
+}
+
+/* Input Fields */
+input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 14px;
+  background-color: #fefefe;
+  outline: none;
+  box-sizing: border-box; /* THIS is crucial */
+}
+
+
+input:focus {
+  border-color: #297eff;
+}
+
+/* OTP Field */
+.otp-wrapper {
+  position: relative;
+}
+
+.otp-wrapper input {
+  width: 100%;
+  padding: 12px 14px; /* match other input padding */
+  padding-right: 40px; /* space for eye icon */
+  box-sizing: border-box; /* ensures padding doesn't increase width */
+}
+
+.eye-icon {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 16px;
+  color: #888;
+}
+
+/* Button */
+button {
+  background-color: #297eff;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #1a5cd6;
+}
+
+/* Bottom Text */
+.bottom-text {
+  font-size: 14px;
+  margin-top: 8px;
+  color: #666;
+}
+
+.bottom-text a {
+  color: #297eff;
+  text-decoration: none;
+  margin-left: 4px;
+  font-weight: 500;
+}
+
+.bottom-text a:hover {
+  text-decoration: underline;
+}
+
+/* RIGHT SECTION (Image) */
+.right-section {
+  width: 50%;
+  background: url('/path-to-your-image.png') no-repeat center center;
+  background-size: cover;
+  border-top-left-radius: 32px;
+  border-bottom-left-radius: 32px;
+}
