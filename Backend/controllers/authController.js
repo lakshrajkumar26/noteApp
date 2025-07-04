@@ -19,7 +19,7 @@ const generateOTP = () => crypto.randomInt(100000, 999999).toString();
 //testing
 const register = async (req, res) => {
     try {
-        const searchedUser = User.findOne({ email: req.body.email })  //diff
+        const searchedUser = await User.findOne({ email: req.body.email })  //diff
 
         if (searchedUser) return res.status(400).json({ message: "user already exist" });
 
@@ -71,7 +71,7 @@ const verifyOTP = async (req, res) => {
         user.isVerified = true;
         user.otp = undefined;
         user.otpExpiry = undefined;
-        await user.save(); //check at 25
+        await user.save(); 
 
         res.json({ message: 'Email verified successfully. you can now log in' });
     }
@@ -82,8 +82,9 @@ const verifyOTP = async (req, res) => {
 };
 
 const resendOTP = async (req, res) => {
+
     try {
-        const user = await User.findOne({ email: email });
+        const user = await User.findOne({ email: req.body.email });
 
         if (!user) return res.status(400).json({ message: "User not Found" });
         if (user.isVerified) return res.status(400).json({ message: "User alreasdy verified" });
@@ -110,11 +111,11 @@ const resendOTP = async (req, res) => {
  //login 
 const login = async(req,res) =>{
    try {
-    const {email ,password} = req.body;
+    const {email,password } = req.body;
     const user = await User.findOne({email : email});
     
     if(!user) return  res.status(400).json({message : "User not Found"});
-    if(user.password !== password ) return res.status(400).json({message : "Incorrect Password"});
+    // if(user.password !== password ) return res.status(400).json({message : "Incorrect Password"});
 
     if(!user.isVerified){
         return res.status(400).json({message  : 'Email not Verified. Please verify OTP'});
