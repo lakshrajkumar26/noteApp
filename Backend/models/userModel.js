@@ -1,22 +1,32 @@
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-    email : {
-        type : String,
-        required : true,
-        unique :true
+    name: {
+        type: String
     },
-    opt : {
-         type : String,
+    dob:{
+        type:Date,
     },
-    isVerified :{
-    type : Boolean,
-    default : false,
+    email: {
+        type: String,
+        required: true,
+        unique: true
     },
-    googleId : {
-        type : String  
+    
+    otp: {
+        type: String,
+        default: "123456"
+    },
+    otpExpiry : { type : Date},
+    isVerified: {
+        type: Boolean,
+        default: false,
+    },
+    googleId: {
+        type: String,
+        default: "NAN"
     }
-} ,{timestamps : true}) ;
+}, { timestamps: true });
 
-const user =  mongoose.model('users',userSchema);
-module.exports = user;
+const userModel = mongoose.model('users', userSchema);
+module.exports = userModel;
