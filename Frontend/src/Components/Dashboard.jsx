@@ -16,21 +16,6 @@ const Dashboard = () => {
       <div className="dashboard-box">
         <header className="dashboard-header">
           <div className="logo">🌐 Dashboard</div>
-          
-          {/* <a
-            href="#"
-            onClick={(e) => {
-              e.preventDefault();
-              logout({
-                logoutParams: {
-                  returnTo: `${window.location.origin}/home`,
-                },
-              });
-            }}
-            className="signout-link"
-          >
-            Sign Out
-          </a> */}
           <button onClick={(e)=>logout()}>Sign out</button>
         </header>
 
