@@ -8,7 +8,8 @@ const cors = require('cors');
 const db = require('./dbConnection/db');
 const session = require('express-session');
 
-const allowedOrigin = 'http://localhost:5173';
+// For deployment, set this to your deployed frontend URL
+const allowedOrigin = process.env.FRONTEND_URL || 'http://localhost:5173';
 
 app.use(cors({
   origin: allowedOrigin,
