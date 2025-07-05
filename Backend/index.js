@@ -8,7 +8,7 @@ const cors = require('cors');
 const db = require('./dbConnection/db');
 const session = require('express-session');
 
-// For deployment, set this to your deployed frontend URL
+// For deployment, set this to your deployed frontend URL (no trailing slash!)
 const allowedOrigin = process.env.FRONTEND_URL || 'http://localhost:5173';
 
 app.use(cors({
@@ -30,17 +30,15 @@ app.use(session({
 app.use('/api/auth',authRoutes);
 app.use('/api/notes',notesRoutes);
 
+// Health check endpoint for Render
 app.get('/health', (req, res) => {
   res.status(200).send('OK');
 });
+
 //testing
 app.get('/',(req,res)=>{
     res.send("backend running")
 })
-app.get('/health', (req, res) => {
-    res.status(200).send('OK');
-  });
-
 
 app.listen(PORT , ()=>{
     console.log(`server is running on ${PORT}`);
