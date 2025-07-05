@@ -32,7 +32,9 @@ app.use('/api/notes',notesRoutes);
 app.get('/',(req,res)=>{
     res.send("backend running")
 })
-
+app.get('/health', (req, res) => {
+    res.status(200).send('OK');
+  });
 
 
 app.listen(PORT , ()=>{
