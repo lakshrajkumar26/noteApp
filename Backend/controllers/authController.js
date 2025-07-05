@@ -1,4 +1,3 @@
-
 const User = require('../models/userModel');
 require("dotenv").config();
 const axios = require('axios');
@@ -87,21 +86,21 @@ const resendOTP = async (req, res) => {
         const user = await User.findOne({ email: req.body.email });
 
         if (!user) return res.status(400).json({ message: "User not Found" });
-        if (user.isVerified) return res.status(400).json({ message: "User alreasdy verified" });
 
         const otp = generateOTP();
         user.otp = otp;
         user.otpExpiry = new Date(Date.now() + 10 * 60 * 1000);
         await user.save();
+        
         //otp chanded now mail
         await transporter.sendMail({
             from: process.env.USER_ID,
             to: req.body.email,
-            subject: "Resend OTP verification",
-            text: `Your new OTP is : ${otp}`
+            subject: "Login OTP",
+            text: `Your login OTP is : ${otp}`
         });
 
-        res.json({ message: 'OTP resend successfully.' });
+        res.json({ message: 'OTP sent successfully.' });
     }
     catch (err) {
   console.log(err);
@@ -115,11 +114,21 @@ const login = async(req,res) =>{
     const user = await User.findOne({email : email});
     
     if(!user) return  res.status(400).json({message : "User not Found"});
-    // if(user.password !== password ) return res.status(400).json({message : "Incorrect Password"});
 
     if(!user.isVerified){
         return res.status(400).json({message  : 'Email not Verified. Please verify OTP'});
     }
+
+    // Check if password is actually OTP for verified users
+    if(user.otp !== password || user.otpExpiry < new Date()) {
+        return res.status(400).json({message : "Invalid or expired OTP"});
+    }
+
+    // Clear OTP after successful login
+    user.otp = undefined;
+    user.otpExpiry = undefined;
+    await user.save();
+
     //storing in session key user 
     req.session.user = {id : user._id, email : user.email ,name : user.name };
     res.json({message : "Logged in Successfully"});    
@@ -137,7 +146,16 @@ const logout = (req,res) => {
 
 //DashBoard (Protected Route)
 const DashBoard = async(req,res) =>{
-    res.json({message :`welcome to the dashboard, ${req.session.user.name}`});
+    if (!req.session.user) {
+        return res.status(401).json({ message: "Unauthorized" });
+    }
+    res.json({
+        message: `welcome to the dashboard, ${req.session.user.name}`,
+        user: {
+            name: req.session.user.name,
+            email: req.session.user.email
+        }
+    });
 }
 
 module.exports = { register , verifyOTP , resendOTP ,login , logout ,DashBoard };

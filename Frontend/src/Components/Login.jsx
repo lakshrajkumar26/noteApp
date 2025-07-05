@@ -3,6 +3,7 @@ import background from '../assets/Background.jpg';
 import { useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import './Login.css';
+import authApi from '../api/authApi';
 
 const Signin = () => {
   const { user, loginWithRedirect, isAuthenticated, logout, isLoading } = useAuth0();
@@ -14,6 +15,8 @@ const Signin = () => {
     otp: '',
     remember: false
   });
+  const [message, setMessage] = useState('');
+  const [showOtp, setShowOtp] = useState(false);
 
   useEffect(() => {
     if (isAuthenticated && !isLoading) {
@@ -26,13 +29,49 @@ const Signin = () => {
     setForm({ ...form, [name]: type === 'checkbox' ? checked : value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSendOtp = async (e) => {
+    e.preventDefault();
+    
+    if (!form.email) {
+      setMessage('Please enter your email');
+      return;
+    }
+
+    try {
+      const response = await authApi.resendOtp(form.email);
+      setMessage(response.data.message);
+      setShowOtp(true);
+    } catch (error) {
+      setMessage(error.response?.data?.message || 'Failed to send OTP');
+    }
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Here you can verify OTP (via backend) and then:
-    // If success:
-    console.log('Form login success → Redirecting...');
-    navigate('/dashboard');
+    if (!showOtp) {
+      handleSendOtp(e);
+      return;
+    }
+
+    try {
+      const response = await authApi.login(form.email, form.otp);
+      
+      setMessage(response.data.message);
+      navigate('/dashboard');
+    } catch (error) {
+      setMessage(error.response?.data?.message || 'Login failed');
+    }
+  };
+
+  const handleResendOtp = async () => {
+    try {
+      const response = await authApi.resendOtp(form.email);
+      
+      setMessage(response.data.message);
+    } catch (error) {
+      setMessage(error.response?.data?.message || 'Failed to resend OTP');
+    }
   };
 
   return (
@@ -42,6 +81,8 @@ const Signin = () => {
           <h2>Sign in</h2>
           <p className="subtitle">Please login to continue to your account.</p>
 
+          {message && <p style={{color: message.includes('Success') || message.includes('success') ? 'green' : 'red'}}>{message}</p>}
+
           <form onSubmit={handleSubmit}>
             <input
               type="email"
@@ -50,36 +91,45 @@ const Signin = () => {
               value={form.email}
               onChange={handleChange}
               required
+              disabled={showOtp}
             />
 
-            <div className="otp-wrapper">
-              <input
-                type="text"
-                name="otp"
-                placeholder="OTP"
-                value={form.otp}
-                onChange={handleChange}
-                required
-              />
-              <span className="eye-icon">👁️</span>
-            </div>
+            {!showOtp && (
+              <button type="submit" className="signin-btn">Send OTP</button>
+            )}
 
-            <div className="resend-row">
-              <a href="#">Resend OTP</a>
-            </div>
+            {showOtp && (
+              <>
+                <div className="otp-wrapper">
+                  <input
+                    type="text"
+                    name="otp"
+                    placeholder="OTP"
+                    value={form.otp}
+                    onChange={handleChange}
+                    required
+                  />
+                  <span className="eye-icon">👁️</span>
+                </div>
 
-            <div className="checkbox-wrapper">
-              <input
-                type="checkbox"
-                name="remember"
-                id="remember"
-                checked={form.remember}
-                onChange={handleChange}
-              />
-              <label htmlFor="remember">Keep me logged in</label>
-            </div>
+                <div className="resend-row">
+                  <a href="#" onClick={handleResendOtp}>Resend OTP</a>
+                </div>
 
-            <button type="submit" className="signin-btn">Sign in</button>
+                <div className="checkbox-wrapper">
+                  <input
+                    type="checkbox"
+                    name="remember"
+                    id="remember"
+                    checked={form.remember}
+                    onChange={handleChange}
+                  />
+                  <label htmlFor="remember">Keep me logged in</label>
+                </div>
+
+                <button type="submit" className="signin-btn">Sign in</button>
+              </>
+            )}
 
             <div className="bottom-text">
               <p>Need an account? <a href="/signup">Create one</a></p>

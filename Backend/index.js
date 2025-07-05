@@ -3,17 +3,18 @@ const app = express();
 require("dotenv").config();
 const PORT = process.env.RUNNING_PORT ||8080;
 const authRoutes = require('./routes/authRoutes');
+const notesRoutes = require('./routes/notesRoutes');
 const cors = require('cors');
 const db = require('./dbConnection/db');
 const session = require('express-session');
 
-// const allowedOrigin = 'http://localhost:5173';
+const allowedOrigin = 'http://localhost:5173';
 
-// app.use(cors({
-//   origin: allowedOrigin,
-//   credentials: true, // Allow cookies, Authorization headers, etc.
-// }));
-app.use(cors());
+app.use(cors({
+  origin: allowedOrigin,
+  credentials: true, // Allow cookies, Authorization headers, etc.
+}));
+
 app.use(express.json());
 app.use(session({
     secret : 'supersecretkey',
@@ -23,6 +24,7 @@ app.use(session({
 }));
 
 app.use('/api/auth',authRoutes);
+app.use('/api/notes',notesRoutes);
 
 
 //testing
