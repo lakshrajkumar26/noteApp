@@ -27,7 +27,9 @@ app.use(session({
 app.use('/api/auth',authRoutes);
 app.use('/api/notes',notesRoutes);
 
-
+app.get('/health', (req, res) => {
+  res.status(200).send('OK');
+});
 //testing
 app.get('/',(req,res)=>{
     res.send("backend running")
