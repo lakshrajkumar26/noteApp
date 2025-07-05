@@ -18,10 +18,13 @@ app.use(cors({
 
 app.use(express.json());
 app.use(session({
-    secret : 'supersecretkey',
-    resave :false,
-    saveUninitilized : true,
-    cookie : {secure : false}
+    secret: 'supersecretkey',
+    resave: false,
+    saveUninitilized: true,
+    cookie: {
+        secure: true,      // Only send cookie over HTTPS (required for Vercel/Render)
+        sameSite: 'none'   // Allow cross-site cookies (required for Vercel/Render)
+    }
 }));
 
 app.use('/api/auth',authRoutes);
