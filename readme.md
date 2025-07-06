@@ -1,6 +1,9 @@
 # NoteTakingApp
 
-<<<<<<< HEAD
+# WalkThrough Demo on (Loom) 
+
+- https://www.loom.com/share/39bc26f3551446c9a38ebed171207dcd
+
 A modern, full-stack note-taking application with secure authentication (Email/OTP & Google Auth0) and user-specific notes management.
 
 ---
@@ -146,13 +149,6 @@ NoteTakingApp/
 - **Logo:** Replace `Frontend/public/logo.png` with your own logo.
 - **Delete Icon:** Replace `Frontend/public/image.png` for the delete button.
 
----
-
-## License
-
-MIT
-
----
 
 **Enjoy your secure, modern note-taking app!**
 =======
