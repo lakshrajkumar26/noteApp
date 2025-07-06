@@ -6,15 +6,15 @@ const NOTES_BASE_URL = `${API_BASE}/api/notes`;
 
 const authApi = {
   register: async (userData) => {
-    return axios.post(`${API_BASE_URL}/register`, userData);
+    return axios.post(`${API_BASE_URL}/register`, userData, { withCredentials: true });
   },
 
   verifyOtp: async (email, otp) => {
-    return axios.post(`${API_BASE_URL}/verify-otp`, { email, otp });
+    return axios.post(`${API_BASE_URL}/verify-otp`, { email, otp }, { withCredentials: true });
   },
 
   resendOtp: async (email) => {
-    return axios.post(`${API_BASE_URL}/resend-otp`, { email });
+    return axios.post(`${API_BASE_URL}/resend-otp`, { email }, { withCredentials: true });
   },
 
   login: async (email, password) => {
