@@ -20,7 +20,7 @@ app.use(express.json());
 app.use(session({
     secret: 'supersecretkey',
     resave: false,
-    saveUninitilized: true,
+    saveUninitialized: true,
     cookie: {
         secure: true,      // Only send cookie over HTTPS (required for Vercel/Render)
         sameSite: 'none'   // Allow cross-site cookies (required for Vercel/Render)
