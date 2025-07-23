@@ -3,7 +3,9 @@
 # WalkThrough Demo on (Loom) 
 
 - https://www.loom.com/share/39bc26f3551446c9a38ebed171207dcd
+- 
 # Vercel 
+
 - https://note-app-gamma-taupe.vercel.app/
 
 A modern, full-stack note-taking application with secure authentication (Email/OTP & Google Auth0) and user-specific notes management.
